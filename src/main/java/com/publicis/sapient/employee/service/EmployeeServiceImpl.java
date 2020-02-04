@@ -38,22 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee getEmployee(final String empId) throws NoRecordFoundException {
 		return employeeCacheDao.getEmployeeById(empId);
 	}
-
-	public List<Employee> updateEmpSalaryBasedOnPlaceBackup(final String place, final String percentage)
-			throws NoRecordFoundException {
-		ArrayList<Employee> employeeList = this.getAllEmployee();
-		float perct = Float.valueOf(percentage) / 100;
-		List<Employee> updatedList = employeeList.stream().filter(e -> e.getPlace().equalsIgnoreCase(place)).map(e1 -> {
-			e1.setSalary(e1.getSalary() + e1.getSalary() * perct);
-			return e1;
-		}).collect(Collectors.toList());
-
-		if (updatedList.isEmpty())
-			throw new NoRecordFoundException();
-
-		updatedList.stream().forEach(a -> employeeCacheDao.updateEmployeeList(a));
-		return updatedList;
-	}
 	
 	@Override
 	public List<Employee> updateEmpSalaryBasedOnPlace(final String place, final String percentage)
