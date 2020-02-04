@@ -39,8 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeCacheDao.getEmployeeById(empId);
 	}
 
-	@Override
-	public List<Employee> updateEmpSalaryBasedOnPlace(final String place, final String percentage)
+	public List<Employee> updateEmpSalaryBasedOnPlaceBackup(final String place, final String percentage)
 			throws NoRecordFoundException {
 		ArrayList<Employee> employeeList = this.getAllEmployee();
 		float perct = Float.valueOf(percentage) / 100;
@@ -55,9 +54,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		updatedList.stream().forEach(a -> employeeCacheDao.updateEmployeeList(a));
 		return updatedList;
 	}
-
-	// Backup Method
-	public List<Employee> updateEmpSalaryBasedOnPlaceBackup(final String place, final String percentage)
+	
+	@Override
+	public List<Employee> updateEmpSalaryBasedOnPlace(final String place, final String percentage)
 			throws NoRecordFoundException {
 		ArrayList<Employee> employeeList = this.getAllEmployee();
 		float perct = Float.valueOf(percentage) / 100;
@@ -67,9 +66,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 						f.getPlace().equalsIgnoreCase(place) ? (f.getSalary() + f.getSalary() * perct) : f.getSalary()))
 				.collect(Collectors.toList());
 
-		if (updatedList.isEmpty())
+		if(0L ==  updatedList.stream().filter(f -> f.getPlace().equalsIgnoreCase(place)).count()) {
 			throw new NoRecordFoundException();
-
+		}
+		
 		updatedList.stream().filter(f -> f.getPlace().equalsIgnoreCase(place))
 				.forEach(a -> employeeCacheDao.updateEmployeeList(a));
 		return updatedList;

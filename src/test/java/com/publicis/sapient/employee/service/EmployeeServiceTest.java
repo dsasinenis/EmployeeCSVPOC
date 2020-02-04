@@ -30,8 +30,8 @@ public class EmployeeServiceTest {
     @InjectMocks
     @Spy
     EmployeeServiceImpl employeeService;
-
-    @BeforeEach
+ 
+	@BeforeEach
     void init() throws NoRecordFoundException {
         List<Employee> empList = new ArrayList<>();
         empList.add(new Employee("151081", "Suresh", "Bengaluru", 1000));
@@ -43,8 +43,10 @@ public class EmployeeServiceTest {
 
     @Test
     void updateEmpSalaryBasedOnPlaceTest() throws NoRecordFoundException {
-        List<Employee> expectedResult=new ArrayList<>();
-        expectedResult.add(new Employee("151081", "Suresh", "Bengaluru", 2000));
-        Assertions.assertEquals(expectedResult,employeeService.updateEmpSalaryBasedOnPlace("Bengaluru","100"));
+        List<Employee> empList=new ArrayList<>();
+        empList.add(new Employee("151081", "Suresh", "Bengaluru", 2000));
+        empList.add(new Employee("151082", "Ramesh", "Chennai", 2000));
+        empList.add(new Employee("151083", "Mahesh", "Hyderabad", 3000));
+        Assertions.assertEquals(empList,employeeService.updateEmpSalaryBasedOnPlace("Bengaluru","100"));
     }
 }
